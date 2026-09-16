@@ -1,5 +1,9 @@
 // backend.js
 import express from "express";
+import cors from "cors";
+
+app.use(cors());
+app.use(express.json());
 
 const app = express();
 const port = 8000;
@@ -34,18 +38,16 @@ const users = {
   ],
 };
 
-app.use(express.json());
-
 const findUserByName = (name) => {
   return users["users_list"].filter((user) => user["name"] === name);
 };
 
 const findUserById = (id) => {
-  return users["users_list"].find((user) => user["id"] === id); 
+  return users["users_list"].find((user) => user["id"] === id);
 }
 
 const findUserByNameAndJob = (name, job) => {
-	return users["users_list"].filter((user) => user["name"] === name && user["job"] === job);
+  return users["users_list"].filter((user) => user["name"] === name && user["job"] === job);
 }
 
 const addUser = (user) => {
@@ -56,7 +58,7 @@ const addUser = (user) => {
 const delUserById = (id) => {
   const user = users["users_list"].find((user) => user["id"] === id);
   users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
-  return user;    
+  return user;
 };
 
 app.post("/users", (req, res) => {
@@ -75,8 +77,8 @@ app.get("/users", (req, res) => {
   if (name != undefined && job != undefined) {
     let result = findUserByNameAndJob(name, job);
     result = { users_list: result };
-    res.send(result); 
-    } else if (name != undefined) {
+    res.send(result);
+  } else if (name != undefined) {
     let result = findUserByName(name);
     result = { users_list: result };
     res.send(result);
