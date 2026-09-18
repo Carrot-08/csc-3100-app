@@ -38,6 +38,14 @@ const users = {
   ],
 };
 
+function generateID() {
+  const letters = String.fromCharCode(Math.floor(Math.random() * 26) + 97) + 
+  String.fromCharCode(Math.floor(Math.random() * 26) + 97) + 
+  String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+  const nums = Math.floor(Math.random() * 1000);
+  return letters + nums;
+}
+
 const findUserByName = (name) => {
   return users["users_list"].filter((user) => user["name"] === name);
 };
@@ -61,10 +69,11 @@ const delUserById = (id) => {
   return user;
 };
 
-app.post("/users", (req, res) => {
+app.post("/users", (req, res) => { 
   const userToAdd = req.body;
+  userToAdd["id"] = generateID();
   addUser(userToAdd);
-  res.send();
+  res.status(201).send(userToAdd);
 });
 
 app.get("/", (req, res) => {
@@ -103,7 +112,7 @@ app.delete("/users/:id", (req, res) => {
   if (result === undefined) {
     res.status(404).send("Resource not found.");
   } else {
-    res.send(result);
+    res.status(204).send();
   }
 });
 
